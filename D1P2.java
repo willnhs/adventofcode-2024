@@ -16,27 +16,30 @@ public class D1P2{
     try{
       File file = new File(fileName);
       Scanner fileReader = new Scanner(file);
-      List<Integer> left = new ArrayList<>();
-      List<Integer> right = new ArrayList<>();
+      ArrayList<Integer> left = new ArrayList<>();
+      Map<Integer, Integer> frequencyByLocation = new HashMap<>();
 
       while (fileReader.hasNextLine()){
-        left.add(fileReader.nextInt());
-        right.add(fileReader.nextInt());
-      }
+        // keep a list of locations encountered in the left column for later processing
+        int location = fileReader.nextInt();
+        left.add(location);
 
-      Map<Integer, Integer> frequencyByLocation = new HashMap<>();
-      for (Integer num : right){
-        if (!frequencyByLocation.containsKey(num)){
-          frequencyByLocation.putIfAbsent(num, 1);
+        // initialize hashmap with newly encountered locations in left column
+        frequencyByLocation.putIfAbsent(location, 0);
+
+        // count occurrence of locations in right column and update hashmap accordingly
+        int instance = fileReader.nextInt();
+        if (frequencyByLocation.containsKey(instance)){
+          frequencyByLocation.computeIfPresent(instance, (k, v) -> v + 1);
         }
         else{
-          frequencyByLocation.computeIfPresent(num, (key, val) -> val + 1);
+          frequencyByLocation.put(instance, 1);
         }
       }
 
       int totalSimilarityScore = 0;
       for (Integer location : left){
-        totalSimilarityScore += (location * frequencyByLocation.getOrDefault(location, 0));
+        totalSimilarityScore += location * frequencyByLocation.get(location);
       }
 
       System.out.println("Total similarity score: " + totalSimilarityScore);

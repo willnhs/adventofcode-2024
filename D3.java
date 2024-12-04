@@ -17,6 +17,8 @@ public class D3{
       String line;
       int sum = 0;
 
+      // regex matches were not accurate when using Scanner
+      // perhaps due to https://stackoverflow.com/questions/21336425/scanner-reading-only-half-the-no-of-lines-in-a-file
       while ((line = fileReader.readLine()) != null){
         // from https://www.baeldung.com/java-count-regex-matches
         Pattern mul_pattern = Pattern.compile("mul\\(\\d+\\,\\d+\\)");

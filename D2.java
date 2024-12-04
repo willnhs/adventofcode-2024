@@ -21,6 +21,14 @@ public class D2{
         if (isStrictlyMonotonic(report) && hasSafeVariance(report)){
           count++;
         }
+        else{
+          for (int i = 0; i < report.size(); i++){
+            if (dampen(report, i)){
+              count++;
+              break;
+            }
+          }
+        }
       }
 
       System.out.println("Number of safe reports: " + count);
@@ -72,5 +80,21 @@ public class D2{
       }
     }
     return true;
+  }
+
+  private static boolean dampen(ArrayList<Integer> report, int idx){
+    int elem = report.get(idx);
+    report.remove(idx);
+
+    boolean isSafe = false;
+
+    if (isStrictlyMonotonic(report) && hasSafeVariance(report)){
+      isSafe = true;
+    }
+    else{
+      report.add(idx, elem);
+    }
+
+    return isSafe;
   }
 }
